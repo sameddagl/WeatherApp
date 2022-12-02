@@ -29,7 +29,6 @@ class ViewController: UIViewController {
         locationManager.delegate = self
         WeatherManager.shared.delegate = self
         DailyForecastManager.shared.delegate = self
-        print("View didload called")
 
         
         locationManager.showsBackgroundLocationIndicator = true
@@ -91,6 +90,7 @@ extension ViewController: DailyForecastManagerDelegate{
 //MARK: - CLLocationManagerDelegate
 extension ViewController: CLLocationManagerDelegate{
     @IBAction func locationButtonClicked(_ sender: UIButton) {
+        showIndicator()
         locationManager.requestLocation()
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -105,6 +105,7 @@ extension ViewController: CLLocationManagerDelegate{
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         DispatchQueue.main.async {
             self.removeIndicator()
+            print(error)
             let alertController = self.createAlert(title: "No location", message: "Couldn't able to get the location")
             self.present(alertController, animated: true)
         }
